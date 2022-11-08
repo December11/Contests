@@ -7,43 +7,62 @@
 
 import Foundation
 
-////// Дана строка (возможно пустая) состоящая из букв A-Z:
-///AAAABBBCCXYZDDDDEEEFFFAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBB
-///
-///нужно написать функцию RLE, которая на выходе даст строку вида:
-///A4B3C2XYZD4E3F3A6B28
-///И генерирует ошибку, если на вход пришла невалидная строка.
-///Если символ встречается 1 раз, то он просто пишется, а если более 1 раза, то после него пишется сколько раз он встречается.
-///
-///
+////// Задача
+///Реализовать работу множества
+///хеш-функция X % 10
 
-enum Errors: Error {
-    case EmptyString
-}
-
-func zipString(_ string: String) throws -> String? {
-    guard var char = string.first else { throw Errors.EmptyString }
-    var result = [String(char)]
-    var counter = 0
-    for character in string {
-        if character != char {
-            if counter > 1 {
-                result.append(String(counter))
+struct MySet {
+    
+    private var elements = [[Int]]()
+    private let setSize = 10
+    
+    init(elements : [[Int]] = [[]]) {
+        if elements == [[]] {
+            for _ in 0...self.setSize {
+                self.elements.append([Int]())
             }
-            result.append(String(character))
-            char = character
-            counter = 1
         } else {
-            counter += 1
+            self.elements = elements
         }
     }
-    result.append(String(counter))
     
-    return result.joined(separator: "")
+    mutating func add(_ element: Int) {
+        guard !find(element) else { return }
+        elements[element % setSize].append(element)
+    }
+    
+    mutating func delete(_ element: Int) -> Bool {
+        guard find(element) else { return false }
+        for i in 0 ..< elements[element % setSize].count {
+            if elements[element % setSize][i] == element,
+               let last = elements[element % setSize].last {
+                elements[element % setSize][i] = last
+            }
+        }
+        elements[element % setSize].removeLast()
+        
+        return true
+    }
+    
+    func find(_ element: Int) -> Bool {
+        elements[element % setSize].contains(element)
+    }
 }
 
-do {
-    try print(zipString("AAAABBBCCXYZDDDDEEEFFFAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBB"))
-} catch {
-    print("I cannot read this string!")
-}
+var set1 = MySet()
+set1.add(12)
+set1.add(23)
+set1.add(22)
+set1.add(25)
+set1.add(2)
+set1.add(17)
+
+print(set1)
+print()
+print(set1.find(12))
+print(set1.find(24))
+print()
+print(set1.delete(12))
+print(set1.delete(12))
+print(set1)
+
