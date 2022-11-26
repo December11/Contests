@@ -8,61 +8,46 @@
 import Foundation
 
 ////// Задача
-///Реализовать работу множества
-///хеш-функция X % 10
+/// На шахматной доске N x N  находятся М ладей (ладья бьет клеткий в той же горизонтали и вертикали до ближайшей занятой)
+/// Определите, сколько пар ладей бьют друг друга.
+/// Ладьи задаютcя парой чисел I и J,  обозначающих координаты клетки.
+/// 1 <= N <= 10^9, 0 <= M <= 2*10^5
+///
 
-struct MySet {
-    
-    private var elements = [[Int]]()
-    private let setSize = 10
-    
-    init(elements : [[Int]] = [[]]) {
-        if elements == [[]] {
-            for _ in 0...self.setSize {
-                self.elements.append([Int]())
-            }
-        } else {
-            self.elements = elements
-        }
+func addRook(rowOrColumn: inout [Int: Int], key: Int) {
+    if !rowOrColumn.keys.contains(key) {
+        rowOrColumn.updateValue(0, forKey: key)
+    }
+    if let oldValue = rowOrColumn[key] {
+        rowOrColumn.updateValue(oldValue + 1, forKey: key)
     }
     
-    mutating func add(_ element: Int) {
-        guard !find(element) else { return }
-        elements[element % setSize].append(element)
-    }
-    
-    mutating func delete(_ element: Int) -> Bool {
-        guard find(element) else { return false }
-        for i in 0 ..< elements[element % setSize].count {
-            if elements[element % setSize][i] == element,
-               let last = elements[element % setSize].last {
-                elements[element % setSize][i] = last
-            }
-        }
-        elements[element % setSize].removeLast()
-        
-        return true
-    }
-    
-    func find(_ element: Int) -> Bool {
-        elements[element % setSize].contains(element)
-    }
+//    if let oldValue = rowOrColumn[key] {
+//        rowOrColumn.updateValue(oldValue + 1, forKey: key)
+//    } else {
+//        rowOrColumn.updateValue(0, forKey: key)
+//    }
 }
 
-var set1 = MySet()
-set1.add(12)
-set1.add(23)
-set1.add(22)
-set1.add(25)
-set1.add(2)
-set1.add(17)
+func countPairs(rowOrColumn: inout [Int: Int]) -> Int {
+    var pairs = 0
+    for key in rowOrColumn.keys {
+        if let value = rowOrColumn[key] {
+            pairs += value - 1
+        }
+    }
+    
+    return pairs
+}
 
-print(set1)
-print()
-print(set1.find(12))
-print(set1.find(24))
-print()
-print(set1.delete(12))
-print(set1.delete(12))
-print(set1)
-
+func countBeatingRooks(rookCoordinates: [Int: Int]) -> Int {
+    var rooksInRow = [Int: Int]()
+    var rooksInColumn = [Int: Int]()
+    
+    rookCoordinates.forEach { (row, column) in
+        addRook(rowOrColumn: &rooksInRow, key: row)
+        addRook(rowOrColumn: &rooksInColumn, key: column)
+    }
+    
+    return countPairs(rowOrColumn: &rooksInRow) + countPairs(rowOrColumn: &rooksInColumn)
+}
