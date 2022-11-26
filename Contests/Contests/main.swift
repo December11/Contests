@@ -8,46 +8,53 @@
 import Foundation
 
 ////// Задача
-/// На шахматной доске N x N  находятся М ладей (ладья бьет клеткий в той же горизонтали и вертикали до ближайшей занятой)
-/// Определите, сколько пар ладей бьют друг друга.
-/// Ладьи задаютcя парой чисел I и J,  обозначающих координаты клетки.
-/// 1 <= N <= 10^9, 0 <= M <= 2*10^5
+/// Дана строка S
+/// Выведите гистограмму как в примере (коды символов отсортированы)
+/// S = "Hello, World!"
 ///
+///        #
+///        ##
+///  ##########
+///   !,Hdelorw
 
-func addRook(rowOrColumn: inout [Int: Int], key: Int) {
-    if !rowOrColumn.keys.contains(key) {
-        rowOrColumn.updateValue(0, forKey: key)
-    }
-    if let oldValue = rowOrColumn[key] {
-        rowOrColumn.updateValue(oldValue + 1, forKey: key)
-    }
-    
-//    if let oldValue = rowOrColumn[key] {
-//        rowOrColumn.updateValue(oldValue + 1, forKey: key)
-//    } else {
-//        rowOrColumn.updateValue(0, forKey: key)
-//    }
-}
-
-func countPairs(rowOrColumn: inout [Int: Int]) -> Int {
-    var pairs = 0
-    for key in rowOrColumn.keys {
-        if let value = rowOrColumn[key] {
-            pairs += value - 1
+func countRepeating(string: String) -> [Character: Int] {
+    var dictionary = [Character: Int]()
+    for letter in string {
+        if !dictionary.keys.contains(letter) {
+            dictionary.updateValue(0, forKey: letter)
+        }
+        if let oldValue = dictionary[letter] {
+            dictionary.updateValue(oldValue + 1, forKey: letter)
         }
     }
     
-    return pairs
+    return dictionary
 }
 
-func countBeatingRooks(rookCoordinates: [Int: Int]) -> Int {
-    var rooksInRow = [Int: Int]()
-    var rooksInColumn = [Int: Int]()
+func countBeatingRooks() {
+    let dictionary = countRepeating(string: "Hello, World!")
+    guard
+        let max = dictionary.values.max()
+    else { return }
+    let sortedKeys = dictionary.keys.sorted()
     
-    rookCoordinates.forEach { (row, column) in
-        addRook(rowOrColumn: &rooksInRow, key: row)
-        addRook(rowOrColumn: &rooksInColumn, key: column)
+    var rows = max
+    while rows > 0 {
+        var str = ""
+        for letter in sortedKeys {
+            if let n = dictionary[letter] {
+                n >= rows ? str.append("#") : str.append(" ")
+            }
+        }
+        print(str)
+        rows -= 1
     }
-    
-    return countPairs(rowOrColumn: &rooksInRow) + countPairs(rowOrColumn: &rooksInColumn)
+    if let res = sortedKeys as? [String] {
+        print(res)
+    }
+    if let res = sortedKeys as? [String] {
+        print(res.joined(separator: ""))
+    }
 }
+
+countBeatingRooks()
