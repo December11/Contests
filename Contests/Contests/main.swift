@@ -17,14 +17,14 @@ import Foundation
 ///  ##########
 ///   !,Hdelorw
 
-func countRepeating(string: String) -> [Character: Int] {
-    var dictionary = [Character: Int]()
+func countRepeating(string: String) -> [String: Int] {
+    var dictionary = [String: Int]()
     for letter in string {
-        if !dictionary.keys.contains(letter) {
-            dictionary.updateValue(0, forKey: letter)
+        if !dictionary.keys.contains(String(letter)) {
+            dictionary.updateValue(0, forKey: String(letter))
         }
-        if let oldValue = dictionary[letter] {
-            dictionary.updateValue(oldValue + 1, forKey: letter)
+        if let oldValue = dictionary[String(letter)] {
+            dictionary.updateValue(oldValue + 1, forKey: String(letter))
         }
     }
     
@@ -49,12 +49,7 @@ func countBeatingRooks() {
         print(str)
         rows -= 1
     }
-    if let res = sortedKeys as? [String] {
-        print(res)
-    }
-    if let res = sortedKeys as? [String] {
-        print(res.joined(separator: ""))
-    }
+    print(sortedKeys.joined(separator: ""))
 }
 
 countBeatingRooks()
