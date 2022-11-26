@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4B1E3D629198F520029AA15 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1E3D529198F520029AA15 /* main.swift */; };
+		BA89C1BF29326AB000878152 /* creatingSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89C1BE29326AB000878152 /* creatingSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		A4B1E3D229198F520029AA15 /* Contests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Contests; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B1E3D529198F520029AA15 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		BA89C1BE29326AB000878152 /* creatingSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = creatingSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				A4B1E3D529198F520029AA15 /* main.swift */,
+				BA89C1BE29326AB000878152 /* creatingSet.swift */,
 			);
 			path = Contests;
 			sourceTree = "<group>";
@@ -121,6 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4B1E3D629198F520029AA15 /* main.swift in Sources */,
+				BA89C1BF29326AB000878152 /* creatingSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +250,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NFMGZN9SCN;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -257,6 +262,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NFMGZN9SCN;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
