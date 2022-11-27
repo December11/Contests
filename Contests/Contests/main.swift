@@ -16,6 +16,7 @@ import Foundation
 /// prefixSum    0  5  8  16  17  21  27
 ///
 
+// строим массив префиксных сумм
 func prefixSum(array: [Int]) -> [Int] {
     var prefixSum = Array(repeating: 0, count: array.count + 1)
     for i in 1 ..< array.count + 1 {
@@ -24,12 +25,12 @@ func prefixSum(array: [Int]) -> [Int] {
     return prefixSum
 }
 
-//
-//func rsq(array: [Int], l: Int, r: Int) -> Int? {
-//    guard array.indices.contains(r),
-//          array.indices.contains(l)
-//    else { return nil }
-//    return array[r] - array[l]
-//}
+// на каждый запрос вызываем вот такую функцию, которая дает ответ за O(1)
+func rsq(array: [Int], l: Int, r: Int) -> Int? {
+    guard array.indices.contains(r),
+          array.indices.contains(l)
+    else { return nil }
+    return array[r] - array[l]
+}
 
 
