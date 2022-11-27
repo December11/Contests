@@ -8,48 +8,33 @@
 import Foundation
 
 ////// Задача
-/// Дана строка S
-/// Выведите гистограмму как в примере (коды символов отсортированы)
-/// S = "Hello, World!"
+/// Дана последовательност чисел длиной N и (M запросов) - // много запросов == префиксные суммы
+/// Запросы: Сколько нулей на полуинтервале [L, R)
 ///
-///        #
-///        ##
-///  ##########
-///   !,Hdelorw
 
-func countRepeating(string: String) -> [String: Int] {
-    var dictionary = [String: Int]()
-    for letter in string {
-        if !dictionary.keys.contains(String(letter)) {
-            dictionary.updateValue(0, forKey: String(letter))
-        }
-        if let oldValue = dictionary[String(letter)] {
-            dictionary.updateValue(oldValue + 1, forKey: String(letter))
-        }
+// решение в лоб
+func countZeroes(array: [Int]) -> Int {
+    var zeroes = 0
+    for i in 0..<array.count where i == 0 {
+        zeroes += 1
     }
-    
-    return dictionary
+    return zeroes
 }
 
-func countBeatingRooks() {
-    let dictionary = countRepeating(string: "Hello, World!")
-    guard
-        let max = dictionary.values.max()
-    else { return }
-    let sortedKeys = dictionary.keys.sorted()
-    
-    var rows = max
-    while rows > 0 {
-        var str = ""
-        for letter in sortedKeys {
-            if let n = dictionary[letter] {
-                n >= rows ? str.append("#") : str.append(" ")
-            }
-        }
-        print(str)
-        rows -= 1
+// решение префиксными суммами
+func makeCountZeroes(array: [Int]) -> [Int] {
+    var prefixZeroes = Array(repeating: 0, count: array.count + 1)
+    for i in 1..<array.count+1 {
+        prefixZeroes[i] = i - 1 == 0 ? prefixZeroes[i-1] + 1 : prefixZeroes[i-1]
     }
-    print(sortedKeys.joined(separator: ""))
+    
+    return prefixZeroes
 }
 
-countBeatingRooks()
+func countZeroes(prefixZeroes: [Int], r: Int, l: Int ) -> Int? {
+    guard prefixZeroes.indices.contains(r),
+          prefixZeroes.indices.contains(l)
+    else { return nil }
+    
+    return prefixZeroes[r] - prefixZeroes[l]
+}
