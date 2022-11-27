@@ -8,33 +8,68 @@
 import Foundation
 
 ////// Задача
-/// Дана последовательност чисел длиной N и (M запросов) - // много запросов == префиксные суммы
-/// Запросы: Сколько нулей на полуинтервале [L, R)
+/// Дана последовательность чисел длиной N
+/// Нужно найти количество отрезков с нулевой суммой.  //  - неск. отрезков == неск. запросов == префиксные суммы
 ///
 
-// решение в лоб
-func countZeroes(array: [Int]) -> Int {
+// решение в лоб  - O(N^2) - что-то тут не так
+func countZeroes1(array: [Int]) -> Int {
     var zeroes = 0
-    for i in 0..<array.count where i == 0 {
-        zeroes += 1
+    for i in 0..<array.count {
+        for j in i+1..<array.count+1 {
+            var rangeSum = 0
+            for k in i..<j {
+                rangeSum += array[k]
+            }
+            if rangeSum == 0 {
+                zeroes += 1
+            }
+        }
     }
     return zeroes
 }
 
-// решение префиксными суммами
-func makeCountZeroes(array: [Int]) -> [Int] {
-    var prefixZeroes = Array(repeating: 0, count: array.count + 1)
-    for i in 1..<array.count+1 {
-        prefixZeroes[i] = i - 1 == 0 ? prefixZeroes[i-1] + 1 : prefixZeroes[i-1]
+// решение в лоб 2 - O(N^2) - тут тоже что-то не так
+func countZeroes(array: [Int]) -> Int {
+    var zeroRanges = 0
+    for i in 0..<array.count {
+        var rangeSum = 0
+        for j in i..<array.count {
+            rangeSum += array[j]
+            if rangeSum == 0 {
+                zeroRanges += 1
+            }
+        }
     }
-    
-    return prefixZeroes
+    return zeroRanges
 }
 
-func countZeroes(prefixZeroes: [Int], r: Int, l: Int ) -> Int? {
-    guard prefixZeroes.indices.contains(r),
-          prefixZeroes.indices.contains(l)
-    else { return nil }
-    
-    return prefixZeroes[r] - prefixZeroes[l]
+// решение префиксными суммами
+func countPrefixSum(array: [Int]) -> [Int] {
+    var prefixSums = [0: 1]
+    var currentSum = 0
+    for elem in array {
+        currentSum += elem
+        if !prefixSums.keys.contains(where: currentSum) {
+            prefixSums.updateValue(0, forKey: currentSum)
+        }
+        if let oldValue = prefixSums[currentSum] {
+            prefixSums.updateValue(oldValue, forKey: currentSum)
+        }
+    }
+    return prefixSums
 }
+
+func countZeroSumRanges(prefixSums: [Int: Int]) -> Int? {
+    var ranges = 0
+    for key in prefixSums.keys {
+        if let countSum = prefixSums[key] {
+            ranges += (countSum * (countSum - 1)) / 2
+        }
+    }
+    
+    return ranges
+}
+
+print(countZeroes(array: [0, 3, 0, 0, 4, 0, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 8]))
+
