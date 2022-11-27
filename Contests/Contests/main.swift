@@ -7,31 +7,29 @@
 
 import Foundation
 
-////// Задача 3
-/// Реализовать сортировку подсчетом
+////// Метод
+/// Реализовать префиксные суммы - RQS
+/// Пусть у нас есть массив nums и N чисел и необходимо отвечать на запросы "Чему равна сумма элементов на полуинтервале [L, R) не включая R
+/// Подсчитаем массив prefixSum длинной N+1, где prefixSum[k] = сумма всех чисел от 0 до k-1.
+///
+/// nums            5  3  8    1   4    6
+/// prefixSum    0  5  8  16  17  21  27
 ///
 
-func countingSorted(_ array: [Int]) -> [Int] {
-    guard
-        let minValue = array.min(),
-        let maxValue = array.max()
-    else { return [] } // зачем тут мин и макс?
-    var results = array
-    
-    let possibleElementsCount = maxValue - minValue + 1 // why +1? зачем вычислять разницу между мин и макс?
-                                    // вычисляем тут количество возможных элементов.
-    var countValues = Array(repeating: 0, count: possibleElementsCount)
-    
-    for element in array {
-        let index = element - minValue
-        countValues[index] = countValues[index] + 1
+func prefixSum(array: [Int]) -> [Int] {
+    var prefixSum = Array(repeating: 0, count: array.count + 1)
+    for i in 1 ..< array.count + 1 {
+        prefixSum[i] = prefixSum[i-1] + array[i-1]
     }
-    var nowPosition = 0
-    for element in 0 ..< possibleElementsCount {
-        for _ in 0..<countValues[element] {
-            results[nowPosition] = element + minValue
-            nowPosition += 1
-        }
-    }
-    return results 
+    return prefixSum
 }
+
+//
+//func rsq(array: [Int], l: Int, r: Int) -> Int? {
+//    guard array.indices.contains(r),
+//          array.indices.contains(l)
+//    else { return nil }
+//    return array[r] - array[l]
+//}
+
+
