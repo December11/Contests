@@ -8,66 +8,28 @@
 import Foundation
 
 ////// Задача
-/// Дана последовательность чисел длиной N
-/// Нужно найти количество отрезков с нулевой суммой.  //  - неск. отрезков == неск. запросов == префиксные суммы
+/// Игрок в футбол обладает одной числовой характеристикой - профессионализм.
+/// команда называется сплоченной, если профессионализм одного игрока не превосходмт суммарный проф. двух любых других игроков команды.
+/// Команда состоит из любого числа игроков.
+/// Дана отсортированная последовательность чисел длинной N - професионализм игроков.
+///
+/// необходимо найти макс. суммарный професионализм сплоченной команды.
 ///
 
-// решение в лоб  - O(N^2) - что-то тут не так
-func countZeroes1(array: [Int]) -> Int {
-    var zeroes = 0
-    for i in 0..<array.count {
-        for j in i+1..<array.count+1 {
-            var rangeSum = 0
-            for k in i..<j {
-                rangeSum += array[k]
-            }
-            if rangeSum == 0 {
-                zeroes += 1
-            }
+func bestTeamSum(players: [Int]) -> Int {
+    var bestSum = 0
+    var nowSum = 0
+    var last = 0
+    for first in 0..<players.count {
+        while last < players.count &&
+                (last == first || players[first] + players[first+1] >= players[last]) {
+            nowSum += players[last]
+            last += 1
         }
-    }
-    return zeroes
-}
-
-// решение в лоб 2 - O(N^2) - тут тоже что-то не так
-func countZeroes(array: [Int]) -> Int {
-    var zeroRanges = 0
-    for i in 0..<array.count {
-        var rangeSum = 0
-        for j in i..<array.count {
-            rangeSum += array[j]
-            if rangeSum == 0 {
-                zeroRanges += 1
-            }
-        }
-    }
-    return zeroRanges
-}
-
-// решение префиксными суммами
-func countPrefixSum(array: [Int]) -> [Int] {
-    var prefixSums = [0: 1]
-    var currentSum = 0
-    for elem in array {
-        currentSum += elem
-        if !prefixSums.keys.contains(where: currentSum) {
-            prefixSums.updateValue(0, forKey: currentSum)
-        }
-        if let oldValue = prefixSums[currentSum] {
-            prefixSums.updateValue(oldValue, forKey: currentSum)
-        }
-    }
-    return prefixSums
-}
-
-func countZeroSumRanges(prefixSums: [Int: Int]) -> Int? {
-    var ranges = 0
-    for key in prefixSums.keys {
-        if let countSum = prefixSums[key] {
-            ranges += (countSum * (countSum - 1)) / 2
-        }
+        
+        bestSum = max(bestSum, nowSum)
+        nowSum -= players[first]
     }
     
-    return ranges
+    return bestSum
 }
-
