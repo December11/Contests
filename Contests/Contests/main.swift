@@ -71,5 +71,3 @@ func countZeroSumRanges(prefixSums: [Int: Int]) -> Int? {
     return ranges
 }
 
-print(countZeroes(array: [0, 3, 0, 0, 4, 0, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 8]))
-
