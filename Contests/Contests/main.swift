@@ -7,62 +7,70 @@
 
 import Foundation
 
-////// Задача
-///Реализовать работу множества
-///хеш-функция X % 10
+////// Метод - Два указателя
 
-struct MySet {
+//
+//  main.swift
+//  Contests
+//
+//  Created by Alla Shkolnik on 07.11.2022.
+//
+
+import Foundation
+
+////// Метод - Бинарный поиск
+///
+///
+
+// бинарный поиск
+func binarySearch(_ array: [Int], x: Int) -> Bool {
+    var left = 0
+    var right = array.count-1
     
-    private var elements = [[Int]]()
-    private let setSize = 10
-    
-    init(elements : [[Int]] = [[]]) {
-        if elements == [[]] {
-            for _ in 0...self.setSize {
-                self.elements.append([Int]())
-            }
-        } else {
-            self.elements = elements
-        }
-    }
-    
-    mutating func add(_ element: Int) {
-        guard !find(element) else { return }
-        elements[element % setSize].append(element)
-    }
-    
-    mutating func delete(_ element: Int) -> Bool {
-        guard find(element) else { return false }
-        for i in 0 ..< elements[element % setSize].count {
-            if elements[element % setSize][i] == element,
-               let last = elements[element % setSize].last {
-                elements[element % setSize][i] = last
-            }
-        }
-        elements[element % setSize].removeLast()
+    while left < right {
+        let mid = (left + right) / 2
         
-        return true
-    }
-    
-    func find(_ element: Int) -> Bool {
-        elements[element % setSize].contains(element)
-    }
+        if x == array[mid] {
+            return true
+        } else if x > array[mid] {
+            left = mid+1
+        } else {
+            right = mid
+            
+    return false
 }
 
-var set1 = MySet()
-set1.add(12)
-set1.add(23)
-set1.add(22)
-set1.add(25)
-set1.add(2)
-set1.add(17)
-
-print(set1)
-print()
-print(set1.find(12))
-print(set1.find(24))
-print()
-print(set1.delete(12))
-print(set1.delete(12))
-print(set1)
-
+// бинарный поиск в возможно развернутом массиве - [4,5,6,7,0,1,2,3]
+class Solution {
+    func search(_ nums: [Int], _ target: Int) -> Int {
+        if nums.count == 0 {
+            return -1
+        }
+        
+        var left = 0
+        var right = nums.count - 1
+        var middle = 0
+        
+        while left < right {
+            middle = (left + right) / 2
+            if nums[middle] == target {
+                return middle
+            }
+            if nums[left] <= nums[middle] {
+                if target >= nums[left] && target < nums[middle] {
+                    right = middle - 1
+                } else {
+                    left = middle + 1
+                }
+            } else {
+                if target > nums[middle] && target <= nums[right] {
+                    left = middle + 1
+                } else {
+                    right = middle - 1
+                }
+            }
+        }
+        
+        return nums[left] == target ? left : -1
+    }
+}
