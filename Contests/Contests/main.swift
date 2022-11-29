@@ -7,27 +7,36 @@
 
 import Foundation
 
-////// 704. Binary Search
-/// Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
-/// You must write an algorithm with O(log n) runtime complexity.
+////// 242. Valid Anagram
+/// Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+/// An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
 ///
 
 class Solution {
-    func search(_ nums: [Int], _ target: Int) -> Int {
-        var left = 0
-        var right = nums.count
+    func isAnagram(_ s: String, _ t: String) -> Bool {
+        // 1. создать два словаря
+        // 2. добавить все символы первого слова в первый словарь
+        // 3. добавить все символы второго слова во второй словарь
+        // 4. проверить совпадает ли массив ключей.
         
-        while left < right {
-            let mid = (right + left) / 2
-            if target == nums[mid] {
-                return mid
-            } else if target > nums[mid] {
-                left = mid + 1
-            } else {
-                right = mid
+        func makeDictionary(_ s: String) -> [Character: Int] {
+            var results = [Character: Int]()
+            for char in s {
+                if results.keys.contains(char) {
+                    if let oldValue = results[char] {
+                        results[char] = oldValue + 1
+                    }
+                } else {
+                    results[char] = 1
+                }
             }
+            
+            return results
         }
         
-        return -1
+        let sDict = makeDictionary(s)
+        let tDict = makeDictionary(t)
+        
+        return sDict == tDict
     }
 }
