@@ -7,44 +7,27 @@
 
 import Foundation
 
-////// 374. Guess Number Higher or Lower
-/// We are playing the Guess Game. The game is as follows:
-/// I pick a number from 1 to n. You have to guess which number I picked.
-/// Every time you guess wrong, I will tell you whether the number I picked is higher or lower than your guess.
+////// 704. Binary Search
+/// Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+/// You must write an algorithm with O(log n) runtime complexity.
 ///
-/// You call a pre-defined API int guess(int num), which returns three possible results:
-///
-/// -1: Your guess is higher than the number I picked (i.e. num > pick).
-/// 1: Your guess is lower than the number I picked (i.e. num < pick).
-/// 0: your guess is equal to the number I picked (i.e. num == pick).
-/// Return the number that I picked.
 
-
-/**
- * Forward declaration of guess API.
- * @param  num -> your guess number
- * @return          -1 if num is higher than the picked number
- *                  1 if num is lower than the picked number
- *               otherwise return 0
- * func guess(_ num: Int) -> Int
- */
-
-class Solution : GuessGame {
-    func guessNumber(_ n: Int) -> Int {
-        var left = 1
-        var right = n
-        var mid = 0
-        while left <= right {
-            mid = (left + right) / 2
-            let answer = guess(mid)
-            if answer == 0 {
+class Solution {
+    func search(_ nums: [Int], _ target: Int) -> Int {
+        var left = 0
+        var right = nums.count
+        
+        while left < right {
+            let mid = (right + left) / 2
+            if target == nums[mid] {
                 return mid
-            } else if answer == 1 {
+            } else if target > nums[mid] {
                 left = mid + 1
             } else {
                 right = mid
             }
         }
-        return mid
+        
+        return -1
     }
 }
